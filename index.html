@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutosllmRC - 100% REALE DATEN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #d4af37, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .main-card {
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.9) 0%, rgba(15, 15, 25, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .heat-gauge {
+            width: 100%;
+            height: 35px;
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .heat-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff00 0%, #ffff00 40%, #ff6600 70%, #ff0000 100%);
+            transition: width 0.05s linear;
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.9);
+        }
+
+        .heat-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #000;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            z-index: 10;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        option {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 175, 55, 0.02) 100%);
+            border-left: 4px solid #d4af37;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .vehicle-name {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.03);
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .spec-label {
+            color: #999;
+            font-weight: 500;
+        }
+
+        .spec-value {
+            color: #d4af37;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .tacho-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .tacho-section {
+            text-align: center;
+        }
+
+        .tacho-title {
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .rpm-tacho {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(20, 20, 35, 0.3) 100%);
+            border-radius: 50%;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .rpm-inner {
+            width: 265px;
+            height: 265px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #1a1a2e, #0a0a0a);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rpm-needle {
+            width: 6px;
+            height: 100px;
+            background: linear-gradient(to top, #d4af37, #ffed4e);
+            position: absolute;
+            bottom: 50%;
+            border-radius: 3px;
+            transform-origin: bottom center;
+            transition: transform 0.03s linear;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            z-index: 5;
+        }
+
+        .rpm-center {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 1), rgba(212, 175, 55, 0.4));
+            border-radius: 50%;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            border: 2px solid #d4af37;
+            z-index: 6;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 1);
+        }
+
+        .rpm-text {
+            position: absolute;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #d4af37;
+            z-index: 4;
+            bottom: 15%;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        .rpm-label {
+            position: absolute;
+            bottom: 3%;
+            font-size: 0.7em;
+            color: #999;
+            z-index: 4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .speed-tacho {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(20, 20, 35, 0.3) 100%);
+            border-radius: 50%;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .speed-inner {
+            width: 265px;
+            height: 265px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #1a1a2e, #0a0a0a);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .speed-needle {
+            width: 6px;
+            height: 100px;
+            background: linear-gradient(to top, #d4af37, #ffed4e);
+            position: absolute;
+            bottom: 50%;
+            border-radius: 3px;
+            transform-origin: bottom center;
+            transition: transform 0.03s linear;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            z-index: 5;
+        }
+
+        .speed-center {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 1), rgba(212, 175, 55, 0.4));
+            border-radius: 50%;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            border: 2px solid #d4af37;
+            z-index: 6;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 1);
+        }
+
+        .speed-text {
+            position: absolute;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #d4af37;
+            z-index: 4;
+            bottom: 15%;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        .speed-label {
+            position: absolute;
+            bottom: 3%;
+            font-size: 0.7em;
+            color: #999;
+            z-index: 4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 15px 40px;
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #000;
+            background: linear-gradient(135deg, #d4af37, #ffed4e);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+        }
+
+        .status-text {
+            text-align: center;
+            font-size: 1.1em;
+            color: #d4af37;
+            font-weight: 600;
+            letter-spacing: 1px;
+            min-height: 35px;
+        }
+
+        .fire-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .flame {
+            position: absolute;
+            background: radial-gradient(circle, #ff6600, #ff0000, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: fireblast 0.8s ease-out forwards;
+        }
+
+        @keyframes fireblast {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-15px, -15px); }
+            50% { transform: translate(15px, 15px); }
+            75% { transform: translate(-15px, 15px); }
+        }
+
+        .explosion {
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .tacho-container {
+                grid-template-columns: 1fr;
+            }
+
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rpm-tacho, .speed-tacho {
+                width: 240px;
+                height: 240px;
+            }
+
+            .rpm-inner, .speed-inner {
+                width: 225px;
+                height: 225px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fire-container" id="fireContainer"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">AutosllmRC</div>
+        </div>
+
+        <div class="main-card" id="mainCard">
+            <div style="margin-bottom: 30px;">
+                <label class="label">🌡️ Motor-Temperatur</label>
+                <div class="heat-gauge">
+                    <div class="heat-bar" id="heatBar"></div>
+                    <div class="heat-text" id="heatText">25°C</div>
+                </div>
+            </div>
+
+            <label class="label">🚗 Fahrzeug wählen</label>
+            <select id="vehicleSelect">
+                <optgroup label="HYPERSPORTWAGEN">
+                    <option value="koenigsegg">🔥 Koenigsegg Jesko Absolut</option>
+                    <option value="bugatti">👑 Bugatti Chiron</option>
+                </optgroup>
+                <optgroup label="SUPERSPORTWAGEN">
+                    <option value="ferrari">🔴 Ferrari F8 Tributo</option>
+                    <option value="lamborghini">⚡ Lamborghini Aventador SVJ</option>
+                    <option value="mclaren">🚀 McLaren 720S</option>
+                    <option value="porsche">🏎️ Porsche 911 GT3 (992)</option>
+                </optgroup>
+                <optgroup label="LUXUS & AMG">
+                    <option value="mercedes_cls">💎 Mercedes-AMG CLS 63</option>
+                    <option value="mercedes_gt">💎 Mercedes-AMG GT Black</option>
+                    <option value="audi_rs6">🏁 Audi RS6 Avant (C8)</option>
+                    <option value="bmw_m440">⚙️ BMW M440i</option>
+                    <option value="corvette">🇺🇸 Corvette Stingray (C8)</option>
+                </optgroup>
+                <optgroup label="MUSKELWAGEN">
+                    <option value="dodge_demon">💪 Dodge Challenger SRT Demon 170</option>
+                </optgroup>
+                <optgroup label="MOTORRÄDER">
+                    <option value="kawasaki_h2r">🏍️ Kawasaki Ninja H2R</option>
+                    <option value="ducati_v4">🏁 Ducati Panigale V4</option>
+                    <option value="harley_750">🔊 Harley-Davidson 750</option>
+                </optgroup>
+                <optgroup label="FLUGZEUGE">
+                    <option value="cessna_172">✈️ Cessna 172 (Piston)</option>
+                    <option value="f16_falcon">🛩️ F-16 Fighting Falcon (Jet)</option>
+                    <option value="boeing_747">🛫 Boeing 747 (4x Jet)</option>
+                </optgroup>
+            </select>
+
+            <div class="info-box">
+                <div class="vehicle-name" id="vehicleName">Koenigsegg Jesko Absolut</div>
+                <div class="spec-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">PS:</span>
+                        <span class="spec-value" id="power">1600 PS</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Höchstgeschwindigkeit:</span>
+                        <span class="spec-value" id="topspeed">>500 km/h (theor.)</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">0-100 km/h:</span>
+                        <span class="spec-value" id="accel100">2.5s</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">0-200 km/h:</span>
+                        <span class="spec-value" id="accel200">5.3s</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">0-300 km/h:</span>
+                        <span class="spec-value" id="accel300">8.9s</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">0-400 km/h:</span>
+                        <span class="spec-value" id="accel400">16.8s</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Max. Motor-Temp:</span>
+                        <span class="spec-value" id="maxTemp">125°C</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Kategorie:</span>
+                        <span class="spec-value" id="category">Hypersportwagen</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tacho-container">
+                <div class="tacho-section">
+                    <div class="tacho-title" id="rpmTitle">Drehzahl (RPM)</div>
+                    <div class="rpm-tacho">
+                        <div class="rpm-inner">
+                            <svg style="position: absolute; width: 100%; height: 100%;" id="rpmScale"></svg>
+                            <div class="rpm-needle" id="rpmNeedle"></div>
+                            <div class="rpm-center"></div>
+                            <div class="rpm-text" id="rpmText">0</div>
+                            <div class="rpm-label" id="rpmUnit">RPM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tacho-section">
+                    <div class="tacho-title" id="speedTitle">Geschwindigkeit</div>
+                    <div class="speed-tacho">
+                        <div class="speed-inner">
+                            <svg style="position: absolute; width: 100%; height: 100%;" id="speedScale"></svg>
+                            <div class="speed-needle" id="speedNeedle"></div>
+                            <div class="speed-center"></div>
+                            <div class="speed-text" id="speedText">0</div>
+                            <div class="speed-label" id="speedUnit">km/h</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button class="control-btn" id="startBtn">▶ START</button>
+                <button class="control-btn" id="stopBtn" style="display: none;">⏹ STOP</button>
+            </div>
+
+            <div class="status-text" id="statusText">✅ Drücke START zum Fahren!</div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 AutosllmRC | 100% REALE BESCHLEUNIGUNGSDATEN</p>
+            <p>Halte LEERTASTE = Gas | Realistische Physik mit echten Messwerten</p>
+        </div>
+    </div>
+
+    <script>
+        /* ===== ALLE FAHRZEUGE MIT 100% REALEN DATEN AUS DEN BILDERN ===== */
+        const vehicles = {
+            // HYPERSPORTWAGEN
+            koenigsegg: {
+                name: 'Koenigsegg Jesko Absolut',
+                category: 'Hypersportwagen',
+                power: 1600,
+                maxSpeed: 531,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.5},
+                    {speed: 200, time: 5.3},
+                    {speed: 300, time: 8.9},
+                    {speed: 400, time: 16.8},
+                    {speed: 531, time: 30}
+                ],
+                maxRPM: 8000,
+                idleRPM: 900,
+                maxTemp: 125,
+                tempRiseRate: 0.38,
+                coolingRate: 0.08
+            },
+            bugatti: {
+                name: 'Bugatti Chiron',
+                category: 'Hypersportwagen',
+                power: 1500,
+                maxSpeed: 420,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.4},
+                    {speed: 200, time: 6.1},
+                    {speed: 300, time: 13.1},
+                    {speed: 400, time: 32.6},
+                    {speed: 420, time: 38}
+                ],
+                maxRPM: 7000,
+                idleRPM: 800,
+                maxTemp: 120,
+                tempRiseRate: 0.37,
+                coolingRate: 0.075
+            },
+            // SUPERSPORTWAGEN
+            ferrari: {
+                name: 'Ferrari F8 Tributo',
+                category: 'Supersportwagen',
+                power: 720,
+                maxSpeed: 340,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.9},
+                    {speed: 200, time: 7.8},
+                    {speed: 300, time: 20},
+                    {speed: 340, time: 28}
+                ],
+                maxRPM: 8500,
+                idleRPM: 700,
+                maxTemp: 115,
+                tempRiseRate: 0.32,
+                coolingRate: 0.09
+            },
+            lamborghini: {
+                name: 'Lamborghini Aventador SVJ',
+                category: 'Supersportwagen',
+                power: 770,
+                maxSpeed: 352,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.8},
+                    {speed: 200, time: 8.2},
+                    {speed: 300, time: 24},
+                    {speed: 352, time: 35}
+                ],
+                maxRPM: 8500,
+                idleRPM: 700,
+                maxTemp: 115,
+                tempRiseRate: 0.33,
+                coolingRate: 0.09
+            },
+            mclaren: {
+                name: 'McLaren 720S',
+                category: 'Supersportwagen',
+                power: 720,
+                maxSpeed: 345,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.8},
+                    {speed: 200, time: 7.3},
+                    {speed: 300, time: 18.2},
+                    {speed: 345, time: 28}
+                ],
+                maxRPM: 8500,
+                idleRPM: 700,
+                maxTemp: 112,
+                tempRiseRate: 0.31,
+                coolingRate: 0.095
+            },
+            porsche: {
+                name: 'Porsche 911 GT3 (992)',
+                category: 'Supersportwagen',
+                power: 520,
+                maxSpeed: 325,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.3},
+                    {speed: 200, time: 10.9},
+                    {speed: 300, time: 25},
+                    {speed: 325, time: 32}
+                ],
+                maxRPM: 9000,
+                idleRPM: 600,
+                maxTemp: 110,
+                tempRiseRate: 0.27,
+                coolingRate: 0.11
+            },
+            // LUXUS & AMG
+            mercedes_cls: {
+                name: 'Mercedes-AMG CLS 63 (680 PS)',
+                category: 'Luxus & AMG',
+                power: 680,
+                maxSpeed: 300,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.4},
+                    {speed: 200, time: 9.5},
+                    {speed: 300, time: 23},
+                    {speed: 300, time: 30}
+                ],
+                maxRPM: 7200,
+                idleRPM: 700,
+                maxTemp: 108,
+                tempRiseRate: 0.25,
+                coolingRate: 0.115
+            },
+            mercedes_gt: {
+                name: 'Mercedes-AMG GT Black Series',
+                category: 'Luxus & AMG',
+                power: 730,
+                maxSpeed: 325,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.2},
+                    {speed: 200, time: 8.8},
+                    {speed: 300, time: 22},
+                    {speed: 325, time: 30}
+                ],
+                maxRPM: 7100,
+                idleRPM: 700,
+                maxTemp: 110,
+                tempRiseRate: 0.26,
+                coolingRate: 0.11
+            },
+            audi_rs6: {
+                name: 'Audi RS6 Avant (C8)',
+                category: 'Luxus & AMG',
+                power: 592,
+                maxSpeed: 305,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.6},
+                    {speed: 200, time: 12.1},
+                    {speed: 300, time: 30},
+                    {speed: 305, time: 35}
+                ],
+                maxRPM: 6700,
+                idleRPM: 650,
+                maxTemp: 106,
+                tempRiseRate: 0.22,
+                coolingRate: 0.13
+            },
+            bmw_m440: {
+                name: 'BMW M440i',
+                category: 'Luxus & AMG',
+                power: 382,
+                maxSpeed: 250,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 4.3},
+                    {speed: 200, time: 16.5},
+                    {speed: 250, time: 40}
+                ],
+                maxRPM: 6500,
+                idleRPM: 600,
+                maxTemp: 102,
+                tempRiseRate: 0.17,
+                coolingRate: 0.16
+            },
+            corvette: {
+                name: 'Corvette Stingray (C8)',
+                category: 'Luxus & AMG',
+                power: 495,
+                maxSpeed: 312,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.1},
+                    {speed: 200, time: 12.6},
+                    {speed: 300, time: 25},
+                    {speed: 312, time: 32}
+                ],
+                maxRPM: 8400,
+                idleRPM: 650,
+                maxTemp: 104,
+                tempRiseRate: 0.20,
+                coolingRate: 0.14
+            },
+            // MUSKELWAGEN
+            dodge_demon: {
+                name: 'Dodge Challenger SRT Demon 170',
+                category: 'Muskelwagen',
+                power: 1025,
+                maxSpeed: 245,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 1.8},
+                    {speed: 200, time: 5.5},
+                    {speed: 240, time: 11},
+                    {speed: 245, time: 18}
+                ],
+                maxRPM: 6200,
+                idleRPM: 700,
+                maxTemp: 122,
+                tempRiseRate: 0.41,
+                coolingRate: 0.07
+            },
+            // MOTORRÄDER
+            kawasaki_h2r: {
+                name: 'Kawasaki Ninja H2R',
+                category: 'Motorrad',
+                power: 300,
+                maxSpeed: 400,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 2.5},
+                    {speed: 200, time: 5.8},
+                    {speed: 300, time: 12.5},
+                    {speed: 400, time: 26}
+                ],
+                maxRPM: 14000,
+                idleRPM: 1200,
+                maxTemp: 105,
+                tempRiseRate: 0.27,
+                coolingRate: 0.12
+            },
+            ducati_v4: {
+                name: 'Ducati Panigale V4',
+                category: 'Motorrad',
+                power: 214,
+                maxSpeed: 300,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 3.2},
+                    {speed: 200, time: 7.1},
+                    {speed: 300, time: 15.7}
+                ],
+                maxRPM: 13000,
+                idleRPM: 1300,
+                maxTemp: 104,
+                tempRiseRate: 0.25,
+                coolingRate: 0.125
+            },
+            harley_750: {
+                name: 'Harley-Davidson 750',
+                category: 'Motorrad',
+                power: 53,
+                maxSpeed: 170,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 9.5},
+                    {speed: 170, time: 28}
+                ],
+                maxRPM: 8000,
+                idleRPM: 1000,
+                maxTemp: 92,
+                tempRiseRate: 0.14,
+                coolingRate: 0.18
+            },
+            // FLUGZEUGE
+            cessna_172: {
+                name: 'Cessna 172 (Piston)',
+                category: 'Flugzeug',
+                power: 180,
+                maxSpeed: 226,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 18},
+                    {speed: 226, time: 60}
+                ],
+                maxRPM: 2700,
+                idleRPM: 600,
+                maxTemp: 98,
+                tempRiseRate: 0.19,
+                coolingRate: 0.11
+            },
+            f16_falcon: {
+                name: 'F-16 Fighting Falcon (Jet)',
+                category: 'Kampfjet',
+                power: 28800,
+                maxSpeed: 2400,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 6},
+                    {speed: 200, time: 13},
+                    {speed: 300, time: 22},
+                    {speed: 2400, time: 45}
+                ],
+                maxRPM: 11800,
+                idleRPM: 2000,
+                maxTemp: 155,
+                tempRiseRate: 0.62,
+                coolingRate: 0.04
+            },
+            boeing_747: {
+                name: 'Boeing 747 (4x Jet)',
+                category: 'Flugzeug',
+                power: 230000,
+                maxSpeed: 988,
+                accelCurve: [
+                    {speed: 0, time: 0},
+                    {speed: 100, time: 15},
+                    {speed: 200, time: 32},
+                    {speed: 300, time: 45},
+                    {speed: 988, time: 90}
+                ],
+                maxRPM: 5000,
+                idleRPM: 800,
+                maxTemp: 145,
+                tempRiseRate: 0.52,
+                coolingRate: 0.06
+            }
+        };
+
+        let currentRPM = 0;
+        let targetRPM = 0;
+        let currentSpeed = 0;
+        let currentTemp = 25;
+        let elapsedTime = 0;
+        let currentVehicle = 'koenigsegg';
+        let isEngineRunning = false;
+        let isThrottling = false;
+        let motorExploded = false;
+
+        const vehicleSelect = document.getElementById('vehicleSelect');
+        const rpmNeedle = document.getElementById('rpmNeedle');
+        const speedNeedle = document.getElementById('speedNeedle');
+        const rpmText = document.getElementById('rpmText');
+        const speedText = document.getElementById('speedText');
+        const vehicleName = document.getElementById('vehicleName');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusText = document.getElementById('statusText');
+        const heatBar = document.getElementById('heatBar');
+        const heatText = document.getElementById('heatText');
+        const mainCard = document.getElementById('mainCard');
+        const fireContainer = document.getElementById('fireContainer');
+
+        function playExplosion() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.frequency.setValueAtTime(200, now);
+            osc1.frequency.exponentialRampToValueAtTime(0.01, now + 1.2);
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            gain1.gain.setValueAtTime(0.7, now);
+            gain1.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+            osc1.start(now);
+            osc1.stop(now + 1.2);
+
+            const noise = audioContext.createBufferSource();
+            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.8, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < buffer.length; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            noise.buffer = buffer;
+            const noiseGain = audioContext.createGain();
+            noise.connect(noiseGain);
+            noiseGain.connect(audioContext.destination);
+            noiseGain.gain.setValueAtTime(0.4, now);
+            noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+            noise.start(now);
+        }
+
+        function createExplosion() {
+            motorExploded = true;
+            playExplosion();
+
+            for (let i = 0; i < 40; i++) {
+                const flame = document.createElement('div');
+                flame.className = 'flame';
+                flame.style.left = '50%';
+                flame.style.top = '50%';
+                const size = Math.random() * 200 + 100;
+                flame.style.width = size + 'px';
+                flame.style.height = size + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 500 + 400;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                flame.style.setProperty('--tx', tx + 'px');
+                flame.style.setProperty('--ty', ty + 'px');
+                
+                fireContainer.appendChild(flame);
+                setTimeout(() => flame.remove(), 1000);
+            }
+
+            mainCard.classList.add('explosion');
+            setTimeout(() => mainCard.classList.remove('explosion'), 600);
+
+            statusText.textContent = '💥💥 MOTOR EXPLODIERT! 💥💥';
+            statusText.style.color = '#ff0000';
+            statusText.style.fontSize = '1.2em';
+            
+            isEngineRunning = false;
+            isThrottling = false;
+            startBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
+        }
+
+        function drawRPMScale() {
+            const svg = document.getElementById('rpmScale');
+            svg.innerHTML = '';
+            svg.setAttribute('viewBox', '0 0 270 270');
+            
+            const centerX = 135;
+            const centerY = 135;
+            const radius = 120;
+            const divisions = 10;
+
+            for (let i = 0; i <= divisions; i++) {
+                const angle = (i / divisions) * 270 - 135;
+                const rad = (angle * Math.PI) / 180;
+                
+                const x1 = centerX + (radius - 12) * Math.cos(rad);
+                const y1 = centerY + (radius - 12) * Math.sin(rad);
+                const x2 = centerX + radius * Math.cos(rad);
+                const y2 = centerY + radius * Math.sin(rad);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', 'rgba(212, 175, 55, 0.3)');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const textX = centerX + (radius + 20) * Math.cos(rad);
+                const textY = centerY + (radius + 20) * Math.sin(rad);
+                text.setAttribute('x', textX);
+                text.setAttribute('y', textY);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('dominant-baseline', 'middle');
+                text.setAttribute('fill', 'rgba(212, 175, 55, 0.6)');
+                text.setAttribute('font-size', '11');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = i;
+                svg.appendChild(text);
+            }
+        }
+
+        function drawSpeedScale() {
+            const svg = document.getElementById('speedScale');
+            svg.innerHTML = '';
+            svg.setAttribute('viewBox', '0 0 270 270');
+            
+            const centerX = 135;
+            const centerY = 135;
+            const radius = 120;
+            const vehicle = vehicles[currentVehicle];
+            const divisions = 10;
+
+            for (let i = 0; i <= divisions; i++) {
+                const angle = (i / divisions) * 270 - 135;
+                const rad = (angle * Math.PI) / 180;
+                
+                const x1 = centerX + (radius - 12) * Math.cos(rad);
+                const y1 = centerY + (radius - 12) * Math.sin(rad);
+                const x2 = centerX + radius * Math.cos(rad);
+                const y2 = centerY + radius * Math.sin(rad);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', 'rgba(212, 175, 55, 0.3)');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const textX = centerX + (radius + 20) * Math.cos(rad);
+                const textY = centerY + (radius + 20) * Math.sin(rad);
+                text.setAttribute('x', textX);
+                text.setAttribute('y', textY);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('dominant-baseline', 'middle');
+                text.setAttribute('fill', 'rgba(212, 175, 55, 0.6)');
+                text.setAttribute('font-size', '11');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = Math.round((i / divisions) * vehicle.maxSpeed);
+                svg.appendChild(text);
+            }
+        }
+
+        function interpolateSpeed(vehicle, time) {
+            const curve = vehicle.accelCurve;
+            
+            for (let i = 0; i < curve.length - 1; i++) {
+                const p1 = curve[i];
+                const p2 = curve[i + 1];
+                
+                if (time >= p1.time && time <= p2.time) {
+                    const ratio = (time - p1.time) / (p2.time - p1.time);
+                    return p1.speed + (p2.speed - p1.speed) * ratio;
+                }
+            }
+            
+            return vehicle.maxSpeed;
+        }
+
+        function updateTachos() {
+            const vehicle = vehicles[currentVehicle];
+
+            const rpmRatio = currentRPM / vehicle.maxRPM;
+            const rpmRotation = rpmRatio * 270 - 135;
+            rpmNeedle.style.transform = `rotate(${rpmRotation}deg)`;
+            rpmText.textContent = Math.round(currentRPM).toLocaleString();
+
+            const speedRatio = currentSpeed / vehicle.maxSpeed;
+            const speedRotation = speedRatio * 270 - 135;
+            speedNeedle.style.transform = `rotate(${speedRotation}deg)`;
+            speedText.textContent = Math.round(currentSpeed);
+
+            const tempPercent = (currentTemp / vehicle.maxTemp) * 100;
+            heatBar.style.width = Math.min(tempPercent, 100) + '%';
+            heatText.textContent = Math.round(currentTemp) + '°C';
+
+            if (tempPercent >= 100) {
+                createExplosion();
+            } else if (tempPercent > 85) {
+                statusText.textContent = `⚠️⚠️ KRITISCH! ${Math.round(tempPercent)}% ⚠️⚠️`;
+                statusText.style.color = '#ff3300';
+                heatText.style.color = '#ff0000';
+            } else if (tempPercent > 70) {
+                statusText.textContent = `⚠️ WARM! ${Math.round(tempPercent)}% ⚠️`;
+                statusText.style.color = '#ff6600';
+                heatText.style.color = '#ffaa00';
+            } else {
+                if (isEngineRunning && !motorExploded) {
+                    statusText.textContent = '✅ Motor läuft - LEERTASTE = Gas';
+                    statusText.style.color = '#d4af37';
+                    heatText.style.color = '#d4af37';
+                }
+            }
+        }
+
+        function animate() {
+            if (!isEngineRunning || motorExploded) return;
+
+            const vehicle = vehicles[currentVehicle];
+            const deltaTime = 0.016;
+            elapsedTime += deltaTime;
+
+            if (isThrottling) {
+                if (currentRPM < vehicle.maxRPM) {
+                    const rpmAccel = vehicle.maxRPM * 0.12;
+                    currentRPM = Math.min(currentRPM + rpmAccel * deltaTime, vehicle.maxRPM);
+                }
+            } else {
+                if (currentRPM > vehicle.idleRPM) {
+                    const rpmDecel = vehicle.maxRPM * 0.06;
+                    currentRPM = Math.max(currentRPM - rpmDecel * deltaTime, vehicle.idleRPM);
+                }
+            }
+
+            if (isThrottling) {
+                const targetSpeed = interpolateSpeed(vehicle, elapsedTime);
+                const speedAccel = (targetSpeed - currentSpeed) * 0.1;
+                currentSpeed = Math.min(currentSpeed + speedAccel, targetSpeed);
+            } else {
+                currentSpeed = Math.max(currentSpeed - 4 * deltaTime, 0);
+            }
+
+            const rpmRatio = (currentRPM - vehicle.idleRPM) / (vehicle.maxRPM - vehicle.idleRPM);
+            const speedRatio = currentSpeed / vehicle.maxSpeed;
+            
+            const heatInput = (rpmRatio * 0.65 + speedRatio * 0.35) * vehicle.tempRiseRate * deltaTime;
+            currentTemp += heatInput;
+            
+            const coolingInput = (currentTemp - 25) * vehicle.coolingRate * deltaTime * 0.05;
+            currentTemp -= coolingInput;
+            
+            currentTemp = Math.max(currentTemp, 25);
+
+            updateTachos();
+            requestAnimationFrame(animate);
+        }
+
+        function idleDown() {
+            const vehicle = vehicles[currentVehicle];
+            
+            if (currentRPM > 0 || currentSpeed > 0 || currentTemp > 30) {
+                currentRPM = Math.max(currentRPM - vehicle.maxRPM * 0.06, 0);
+                currentSpeed = Math.max(currentSpeed - 3, 0);
+                currentTemp = Math.max(currentTemp - 1.5, 25);
+                updateTachos();
+                requestAnimationFrame(idleDown);
+            }
+        }
+
+        vehicleSelect.addEventListener('change', (e) => {
+            currentVehicle = e.target.value;
+            const vehicle = vehicles[currentVehicle];
+            
+            motorExploded = false;
+            vehicleName.textContent = vehicle.name;
+            document.getElementById('category').textContent = vehicle.category;
+            document.getElementById('power').textContent = vehicle.power + ' PS';
+            document.getElementById('topspeed').textContent = vehicle.maxSpeed + ' km/h';
+            
+            // Berechne die Beschleunigungszeiten aus der Kurve
+            document.getElementById('accel100').textContent = vehicle.accelCurve[1].time + 's';
+            if (vehicle.accelCurve[2]) document.getElementById('accel200').textContent = vehicle.accelCurve[2].time + 's';
+            if (vehicle.accelCurve[3]) document.getElementById('accel300').textContent = vehicle.accelCurve[3].time + 's';
+            if (vehicle.accelCurve[4]) document.getElementById('accel400').textContent = vehicle.accelCurve[4].time + 's';
+            document.getElementById('maxTemp').textContent = vehicle.maxTemp + '°C';
+
+            drawSpeedScale();
+            currentTemp = 25;
+            elapsedTime = 0;
+            
+            if (isEngineRunning) {
+                stopBtn.click();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && isEngineRunning && !motorExploded) {
+                e.preventDefault();
+                isThrottling = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                isThrottling = false;
+            }
+        });
+
+        startBtn.addEventListener('click', () => {
+            if (!isEngineRunning) {
+                motorExploded = false;
+                isEngineRunning = true;
+                const vehicle = vehicles[currentVehicle];
+                currentRPM = vehicle.idleRPM;
+                currentTemp = 35;
+                currentSpeed = 0;
+                elapsedTime = 0;
+                startBtn.style.display = 'none';
+                stopBtn.style.display = 'inline-block';
+                statusText.textContent = '✅ Motor läuft - LEERTASTE = Gas';
+                statusText.style.color = '#d4af37';
+                animate();
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            isEngineRunning = false;
+            isThrottling = false;
+            startBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
+            statusText.textContent = '✅ Motor gestoppt';
+            statusText.style.color = '#d4af37';
+            idleDown();
+        });
+
+        drawRPMScale();
+        drawSpeedScale();
+    </script>
+</body>
+</html>
